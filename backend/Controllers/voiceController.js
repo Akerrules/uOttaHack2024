@@ -3,6 +3,7 @@ const COHERE_API_KEY = process.env.COHERE_API_KEY;
 const cohere = new CohereClient({
   token: COHERE_API_KEY,
 });
+const axios = require("axios");
 
 exports.user_list = async (req, res) => {
   try {
@@ -24,21 +25,30 @@ exports.user_create = async (req, res) => {
     let label = await find_classify(req.body.transcript); // Assuming find_classify is an async function
     console.log("label:", label);
 
-    let result = await service(label, req.body.transcript);
+    let result_service = await service(
+      label,
+      req.body.transcript,
+      req.body.location
+    );
+    let result_send = {
+      label: label,
+      data: result_service.data,
+      speak: result_service.speak,
+    };
     console.log("service result:", result);
-    res.status(201).json(result);
+    res.status(201).json(result_send);
   } catch (error) {
     res.status(500).send(error);
   }
 };
 
-function service(label, transcript) {
+function service(label, transcript, curentLocation) {
   result = "";
   if (label === "Navigation") {
     result = get_Navigation(transcript);
     return result;
   } else if (label === "Find_Nearby") {
-    result = get_Find_Near(transcript);
+    result = get_Find_Near(transcript, curentLocation);
     return result;
   } else if (label === "Request_Joke") {
     console.log("calling jokes");
@@ -64,7 +74,56 @@ function get_Navigation(transcript) {
         returnLikelihoods: "NONE",
       });
       console.log(response.generations[0].text);
-      let result = response.generations[0].text;
+      let result = response.generations[0].text; //need to find[]
+      result = result.slice(result.indexOf("[") + 1, result.indexOf("]"));
+      let result_list = result.split(",");
+      console.log("should be an array", result);
+      try {
+        // Prepare the URL of the second controller's API
+        // Assuming localhost for simplicity; in a real scenario, this could be a different service URL
+        const response = await axios.post("http://localhost:3500/places/", {
+          origin: result_list[0],
+          destination: result_list[1],
+          placeType: "electric_vehicle_charging_station",
+        });
+
+        var tmp =
+          "Generate a response for the given tag. Example: here all the ev charging station along the way to your route!'. here is the list of the starting place and destination" +
+          result +
+          ". first be happy about their destination and tell them ur excited to guide them and then Say something breif about  the destination like a fact! Then say how many ev charging station there are using this list :" +
+          JSON.stringify(response.data);
+        // console.log(response.data.filter(Boolean));
+
+        const response2 = await cohere.generate({
+          model: "command",
+          prompt: tmp,
+
+          maxTokens: 200,
+          temperature: 0.9,
+          k: 0,
+          stopSequences: [],
+          returnLikelihoods: "NONE",
+        });
+        // const response2 = await cohere.generate({
+        //   model: "command",
+        //   prompt:
+        //     "Generate a response for the given tag. Example: here all the ev charging station along the way to your route!'. here is the list of the starting place and destination" +
+        //     result +
+        //     ".Say something about the destination like a fact ",
+        //   maxTokens: 100,
+        //   temperature: 0.9,
+        //   k: 0,
+        //   stopSequences: [],
+        //   returnLikelihoods: "NONE",
+        // });
+        result = {
+          data: response.data,
+          speak: response2.generations[0].text,
+        };
+      } catch (error) {
+        console.log(error);
+      }
+
       resolve(result);
     } catch (error) {
       reject(error);
@@ -72,7 +131,7 @@ function get_Navigation(transcript) {
   });
 }
 
-function get_Find_Near(transcript) {
+function get_Find_Near(transcript, currentLocation) {
   return new Promise(async (resolve, reject) => {
     try {
       const response = await cohere.generate({
@@ -80,7 +139,7 @@ function get_Find_Near(transcript) {
         prompt:
           "Given the user's text:=\"" +
           transcript +
-          '" identify and return the type of place they are looking for from the given list find the best match and just return the match not extra text. here is list of places : "car_dealer car_rental, car_repair, car_wash, electric_vehicle_charging_station, gas_station, parking, rest_stop, art_gallery, museum, performing_arts_theater, library,preschool, primary_school	school, secondary_school , university, amusement_center, amusement_park, aquarium, banquet_hall, bowling_alley, casino, community_center, convention_center, cultural_center, dog_park, event_venue, hiking_area, historical_landmark, marina, movie_rental, movie_theater, national_park, night_club, park, tourist_attraction, visitor_center, wedding_venue, zoo, american_restaurant, bakery, bar, barbecue_restaurant, brazilian_restaurant, breakfast_restaurant, brunch_restaurant, cafe, chinese_restaurant, coffee_shop, fast_food_restaurant, french_restaurant, greek_restaurant, hamburger_restaurant, ice_cream_shop, indian_restaurant, indonesian_restaurant, italian_restaurant, japanese_restaurant, korean_restaurant	lebanese_restaurant, meal_delivery, meal_takeaway, mediterranean_restaurant, mexican_restaurant, middle_eastern_restaurant, pizza_restaurant, ramen_restaurant, restaurant, sandwich_shop, seafood_restaurant, spanish_restaurant, steak_house, sushi_restaurant, thai_restaurant, turkish_restaurant, vegan_restaurant, vegetarian_restaurant, vietnamese_restaurant,barber_shop, beauty_salon, cemetery, child_care_agency, consultant, courier_service, electrician, florist, funeral_home, hair_care, hair_salon, insurance_agency,	laundry, lawyer, locksmith, moving_company, painter, plumber, real_estate_agency, roofing_contractor, storage, tailor, telecommunications_service_provider, travel_agency, veterinary_care,auto_parts_store, bicycle_store, book_store, cell_phone_store, clothing_store, convenience_store, department_store, discount_store, electronics_store, furniture_store, gift_shop, grocery_store, hardware_store, home_goods_store, home_improvement_store, jewelry_store, liquor_store, market, pet_store, shoe_store, shopping_mall, sporting_goods_store, store, supermarket, wholesaler". No any additional details or commentary just the word.',
+          '" identify and return the type of place they are looking for from the given list find the best match and just return the match not extra text and its ok if its vaugue. here is list of places : "car_dealer car_rental, car_repair, car_wash, electric_vehicle_charging_station, gas_station, parking, rest_stop, art_gallery, museum, performing_arts_theater, library,preschool, primary_school	school, secondary_school , university, amusement_center, amusement_park, aquarium, banquet_hall, bowling_alley, casino, community_center, convention_center, cultural_center, dog_park, event_venue, hiking_area, historical_landmark, marina, movie_rental, movie_theater, national_park, night_club, park, tourist_attraction, visitor_center, wedding_venue, zoo, american_restaurant, bakery, bar, barbecue_restaurant, brazilian_restaurant, breakfast_restaurant, brunch_restaurant, cafe, chinese_restaurant, coffee_shop, fast_food_restaurant, french_restaurant, greek_restaurant, hamburger_restaurant, ice_cream_shop, indian_restaurant, indonesian_restaurant, italian_restaurant, japanese_restaurant, korean_restaurant	lebanese_restaurant, meal_delivery, meal_takeaway, mediterranean_restaurant, mexican_restaurant, middle_eastern_restaurant, pizza_restaurant, ramen_restaurant, restaurant, sandwich_shop, seafood_restaurant, spanish_restaurant, steak_house, sushi_restaurant, thai_restaurant, turkish_restaurant, vegan_restaurant, vegetarian_restaurant, vietnamese_restaurant,barber_shop, beauty_salon, cemetery, child_care_agency, consultant, courier_service, electrician, florist, funeral_home, hair_care, hair_salon, insurance_agency,	laundry, lawyer, locksmith, moving_company, painter, plumber, real_estate_agency, roofing_contractor, storage, tailor, telecommunications_service_provider, travel_agency, veterinary_care,auto_parts_store, bicycle_store, book_store, cell_phone_store, clothing_store, convenience_store, department_store, discount_store, electronics_store, furniture_store, gift_shop, grocery_store, hardware_store, home_goods_store, home_improvement_store, jewelry_store, liquor_store, market, pet_store, shoe_store, shopping_mall, sporting_goods_store, store, supermarket, wholesaler". No any additional details or commentary just the word. Make sure NO NO commentary and additional details  ',
         maxTokens: 46,
         temperature: 0.9,
         k: 0,
@@ -88,7 +147,48 @@ function get_Find_Near(transcript) {
         returnLikelihoods: "NONE",
       });
       console.log(response.generations[0].text);
-      let result = response.generations[0].text;
+      var result = response.generations[0].text;
+      try {
+        // Prepare the URL of the second controller's API
+        // Assuming localhost for simplicity; in a real scenario, this could be a different service URL
+        const response = await axios.post(
+          "http://localhost:3500/nearbyPlaces/",
+          {
+            lat: currentLocation.lat,
+            lng: currentLocation.lng,
+            placeType: result,
+          }
+        );
+        console.log(
+          "cohere:",
+          "Generate a response for the given tag. Example: For 'coffee_shop', the response should be 'Here are the nearest coffee shops!'. here is the list of the item:" +
+            JSON.stringify(response.data) +
+            "and the tag is:" +
+            result +
+            ". Don't add comentry it just need to be general like alexa. Be breif and just list few "
+        );
+        // Use the response from the second controller
+        const response2 = await cohere.generate({
+          model: "command",
+          prompt:
+            "Generate a response for the given tag. Example: For 'coffee_shop', the response should be 'Here are the nearest coffee shops!'. here is the list of the item:" +
+            JSON.stringify(response.data) +
+            "and the tag is:" +
+            result +
+            ". Don't add comentry it just need to be general like alexa.",
+          maxTokens: 100,
+          temperature: 0.9,
+          k: 0,
+          stopSequences: [],
+          returnLikelihoods: "NONE",
+        });
+        result = { data: response.data, speak: response2.generations[0].text };
+        console.log(result);
+      } catch (error) {
+        // Handle errors, such as network issues or receiving an error response
+        console.error("Error calling second controller:", error);
+        res.status(500).send("Error calling second controller");
+      }
       resolve(result);
     } catch (error) {
       reject(error);

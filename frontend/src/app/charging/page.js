@@ -6,25 +6,23 @@ import Sidebar from "../component/sideBar";
 import MapWithMarkers from "../component/mapWithMarker";
 import ChargingStationCard from "../component/chargingStation";
 
-
 export default function charging() {
-
   const stations = [
     {
-      id: 'ChIJ2yYYHgAFzkwRjGU5BPXLEGY',
-      formattedAddress: '44 Elgin St, Ottawa, ON K1P 1C7, Canada',
-      name: 'Little Victories Coffee Roasters - Elgin'
+      id: "ChIJ2yYYHgAFzkwRjGU5BPXLEGY",
+      formattedAddress: "44 Elgin St, Ottawa, ON K1P 1C7, Canada",
+      name: "Little Victories Coffee Roasters - Elgin",
     },
     {
-      id: 'ChIJSQkH3sAFzkwRhS8mNhp6nts',
-      formattedAddress: '912 Bank St, Ottawa, ON K1S 3W6, Canada',
-      name: 'Kettlemans Bagel'
+      id: "ChIJSQkH3sAFzkwRhS8mNhp6nts",
+      formattedAddress: "912 Bank St, Ottawa, ON K1S 3W6, Canada",
+      name: "Kettlemans Bagel",
     },
     {
-      id: 'ChIJEYf9WFEEzkwRmzXNk2Aw2lU',
-      formattedAddress: '150 Elgin St, Ottawa, ON K2P 1L4, Canada',
-      name: 'The SconeWitch'
-    }
+      id: "ChIJEYf9WFEEzkwRmzXNk2Aw2lU",
+      formattedAddress: "150 Elgin St, Ottawa, ON K2P 1L4, Canada",
+      name: "The SconeWitch",
+    },
   ];
 
   // const stations = [
@@ -76,7 +74,7 @@ export default function charging() {
   //     name: 'ElectroCharge Central Park',
   //     address: '123 Main St, Metropolis, NY'
   //   },
-    
+
   // ];
 
   return (
@@ -85,21 +83,18 @@ export default function charging() {
         <TpBar></TpBar>
       </div>
       <div className="flex">
-
         <div className="bg-white rounded-lg">
-            <Sidebar></Sidebar>
+          <Sidebar></Sidebar>
         </div>
 
-        <MapWithMarkers locations={stations} ></MapWithMarkers>
-       
+        <MapWithMarkers locations={stations}></MapWithMarkers>
       </div>
 
       <div className="flex flex-nowrap overflow-x-auto space-x-4 py-4">
-      {stations.map((station) => (
-        <ChargingStationCard key={station.id} station={station} />
-      ))}
-    </div>
-
+        {stations.map((station) => (
+          <ChargingStationCard key={station.id} station={station} />
+        ))}
+      </div>
     </main>
   );
 }
