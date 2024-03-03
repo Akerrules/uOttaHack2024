@@ -1,9 +1,9 @@
-.weatherIcon{
-    padding-left: 5px;
-    padding-right: 5px;
+.weatherIcon {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-.canvas{
-    width: 50% !important; 
-    height: 100vh !important;
+.canvas {
+  width: 100% !important;
+  height: 100vh !important;
 }
