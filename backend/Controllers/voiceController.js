@@ -147,8 +147,9 @@ function get_Find_Near(transcript, currentLocation) {
         stopSequences: [],
         returnLikelihoods: "NONE",
       });
-      console.log(response.generations[0].text);
-      var result = response.generations[0].text.toLowerCase();
+      console.log(response.generations[0].text.toLowerCase().split(" ")[0]);
+      console.log(response.generations[0].text.toLowerCase().split(" ")[0]);
+      var result = response.generations[0].text.toLowerCase().split(" "[0]);
       try {
         // Prepare the URL of the second controller's API
         // Assuming localhost for simplicity; in a real scenario, this could be a different service URL
@@ -162,7 +163,7 @@ function get_Find_Near(transcript, currentLocation) {
         );
         console.log(
           "cohere:",
-          "Generate a response for the given tag. Example: For 'coffee_shop', the response should be 'Here are the nearest coffee shops!'. here is the list of the item:" +
+          "Generate a response for the given tag. Example: For 'coffee_shop', the response should be 'Here are the nearest coffee_shops!'. here is the list of the item:" +
             JSON.stringify(response.data) +
             "and the tag is:" +
             result +

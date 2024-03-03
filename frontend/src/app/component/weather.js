@@ -1,8 +1,8 @@
 // pages/index.js
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './component.css'; 
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./component.css";
 
 function Weather() {
   const [weatherData, setWeatherData] = useState(null);
@@ -12,10 +12,12 @@ function Weather() {
     const fetchWeatherData = async () => {
       try {
         // Replace 'YOUR_API_KEY' with your actual API key from OpenWeatherMap
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=ottawa&appid=c8529b2d7e91ff78a3aa0f28f53f50ae`);
+        const response = await axios.get(
+          `https://api.openweathermap.org/data/2.5/weather?q=ottawa&appid=c8529b2d7e91ff78a3aa0f28f53f50ae`
+        );
         setWeatherData(response.data);
       } catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error("Error fetching weather data:", error);
       }
     };
 
@@ -26,23 +28,25 @@ function Weather() {
   const getWeatherIconUrl = (weatherCondition) => {
     // You can define mappings of weather conditions to icon URLs here
     switch (weatherCondition) {
-      case 'Clouds':
-        return './weather/cloudy.png';
-      case 'Rain':
-        return './weather/rain.png';
+      case "Clouds":
+        return "/weather/cloudy.png";
+      case "Rain":
+        return "/weather/rain.png";
       // Add more cases for other weather conditions as needed
-      case 'Fog':
-        return '/weather/fog.png';
+      case "Fog":
+        return "/weather/fog.png";
       default:
-        return '/weather/sun.png';
+        return "/weather/sun.png";
     }
   };
 
   return (
     <div>
       {weatherData && (
-        <div className='flex'>
-          <p className='font-bold'>{(weatherData.main.temp - 273.15).toFixed(2)}°C</p>
+        <div className="flex p-4 bg-white rounded-lg shadow-xl">
+          <p className="font-bold">
+            {(weatherData.main.temp - 273.15).toFixed(2)}°C
+          </p>
           {weatherData.weather[0].icon && (
             <img
               className="weatherIcon"
