@@ -15,7 +15,8 @@ export default function charging() {
 
   const search = searchParams.get("markers");
 
-  const json_marker = JSON.parse(search);
+  var json_marker = JSON.parse(search);
+
   console.log(json_marker, "jason");
   // const stations = [
   //   {
@@ -103,9 +104,13 @@ export default function charging() {
       </div>
 
       <div className="flex flex-nowrap overflow-x-auto space-x-4 py-4">
-        {json_marker.map((station) => (
-          <ChargingStationCard key={station.id} station={station} />
-        ))}
+        {json_marker && (
+          <div>
+            {json_marker.map((station) => (
+              <ChargingStationCard key={station.id} station={station} />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

@@ -89,7 +89,6 @@ const MapWithMarkers = ({ locations }) => {
             />
           </div>
         ))}
-        <Marker position={center} />
       </GoogleMap>
     </LoadScript>
   );
