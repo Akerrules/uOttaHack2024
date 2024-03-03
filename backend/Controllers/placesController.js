@@ -1,9 +1,6 @@
 const axios = require('axios');
 const API_KEY = process.env.API_KEY;
-const SPECS = {
-    speed: 60, // 60 miles per hour
-    batteryCapacity: 300, // 300 miles
-};
+
 
 
 
@@ -85,12 +82,12 @@ async function searchNearbyPlaces(lat, lng, placeType) {
   const headers = {
     'Content-Type': 'application/json',
     'X-Goog-Api-Key': API_KEY,
-    'X-Goog-FieldMask': `places.displayName,places.formattedAddress`
+    'X-Goog-FieldMask': `places.displayName,places.formattedAddress,places.id`
   };
 
   try {
     const response = await axios.post(url, requestBody, { headers });
-    // console.log(response.data.places);
+    console.log(response.data.places);
     const places = transformObjects(response.data.places);
     return places;
   } catch (error) {
@@ -101,6 +98,7 @@ async function searchNearbyPlaces(lat, lng, placeType) {
 
 function transformObjects(arr) {
     return arr.map(obj => ({
+      id: obj.id,
       formattedAddress: obj.formattedAddress,
       name: obj.displayName.text
     }));
@@ -108,10 +106,10 @@ function transformObjects(arr) {
 function filterUniqueAddresses(arr) {
     const uniqueAddresses = new Set();
     return arr.filter(obj => {
-      if (uniqueAddresses.has(obj.formattedAddress)) {
+      if (uniqueAddresses.has(obj.id)) {
         return false; // Skip if address is already in the set
       } else {
-        uniqueAddresses.add(obj.formattedAddress);
+        uniqueAddresses.add(obj.id);
         return true; // Include if address is not in the set
       }
     });
