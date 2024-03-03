@@ -108,7 +108,7 @@ export default function Home() {
       console.log(response.data);
       // setTestSpeak(response.data + "test");
       console.log("should speak");
-      setTestSpeak(response.data);
+      setTestSpeak(response.data.speak);
       // Handle successful posting here, e.g., resetting transcript
       resetTranscript();
     } catch (error) {
