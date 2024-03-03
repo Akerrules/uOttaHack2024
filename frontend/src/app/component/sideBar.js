@@ -70,30 +70,30 @@ const isActiveLink = (href) => {
 
 
   // Render the "Start Trip" button only if the current path is "/"
-  const renderStartTripButton = () => {
-    if (pathname === '/') {
-      return (
-        <Link href="/trip">
-          <button className="text-gray-500 text-2xl mt-6 inline-block border-6 border-white font-semibold py-2 px-4 ml-6 rounded-lg hover:bg-white ">
-            START TRIP »
-          </button>
-        </Link>
-      );
-    }
-    return null;
-  };
+  // const renderStartTripButton = () => {
+  //   if (pathname === '/') {
+  //     return (
+  //       <Link href="/trip">
+  //         <button className="text-gray-500 text-2xl mt-6 inline-block border-6 border-white font-semibold py-2 px-4 ml-6 rounded-lg hover:bg-white ">
+  //           START TRIP »
+  //         </button>
+  //       </Link>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   return (
     <div className={`rounded-lg w-auto ${isHomeRoute() ? 'ml-10' : ''}`}>
       <ul>
         <li>{renderLinkContent(faHouse, 'HOME', '/')}</li>
-        <li>{renderLinkContent(faRoute, 'ROUTES', '/routes')}</li>
+        <li>{renderLinkContent(faRoute, 'ROUTES', '/trip')}</li>
         <li>{renderLinkContent(faChargingStation, 'CHARGING', '/charging')}</li>
         <li>{renderLinkContent(faMusic, 'ENTERTAINMENT', '/entertainment')}</li>
         <li>{renderLinkContent(faBars, 'HISTORIC VIEW', '/historic-view')}</li>
       </ul>
 
-      {renderStartTripButton()}
+      {/* {renderStartTripButton()} */}
     </div>
   );
 }

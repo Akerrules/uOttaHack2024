@@ -170,13 +170,14 @@ export default function Home() {
       <div className=" w-full z-10">
         <TpBar></TpBar>
       </div>
-      <div className="absolute z-10 ">
+      <div className="absolute z-10 flex flex-box">
         <Sidebar></Sidebar>
+      <div className="">
+          <BatteryPage></BatteryPage>
+      </div>
+        
       </div>
 
-      <div className="absolute z-10 top-[550px] left-[400px]">
-        <BatteryPage></BatteryPage>
-      </div>
     </main>
   );
 }
