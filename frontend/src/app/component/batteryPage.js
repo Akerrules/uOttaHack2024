@@ -18,7 +18,7 @@ const BatteryPage = () => {
   const batteryData = [
     { title: 'Battery', value: '20%' },
     { title: 'Range', value: '300 km' },
-    {title: '', Value:'Start Trip >>'}
+    {title: 'Trip Starter>>', Value:'Start Trip'}
   ];
 
   return (
