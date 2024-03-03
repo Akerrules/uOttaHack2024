@@ -2,28 +2,40 @@
 
 import React, { useState } from "react";
 import TpBar from "../component/tpBar";
+import { useSearchParams } from "next/navigation";
 import Sidebar from "../component/sideBar";
+import { useRouter } from "next/navigation";
 import MapWithMarkers from "../component/mapWithMarker";
 import ChargingStationCard from "../component/chargingStation";
+// import { json } from "stream/consumers";
 
 export default function charging() {
-  const stations = [
-    {
-      id: "ChIJ2yYYHgAFzkwRjGU5BPXLEGY",
-      formattedAddress: "44 Elgin St, Ottawa, ON K1P 1C7, Canada",
-      name: "Little Victories Coffee Roasters - Elgin",
-    },
-    {
-      id: "ChIJSQkH3sAFzkwRhS8mNhp6nts",
-      formattedAddress: "912 Bank St, Ottawa, ON K1S 3W6, Canada",
-      name: "Kettlemans Bagel",
-    },
-    {
-      id: "ChIJEYf9WFEEzkwRmzXNk2Aw2lU",
-      formattedAddress: "150 Elgin St, Ottawa, ON K2P 1L4, Canada",
-      name: "The SconeWitch",
-    },
-  ];
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get("markers");
+
+  const json_marker = JSON.parse(search);
+  console.log(json_marker, "jason");
+  // const stations = [
+  //   {
+  //     id: "ChIJ2yYYHgAFzkwRjGU5BPXLEGY",
+  //     formattedAddress: "44 Elgin St, Ottawa, ON K1P 1C7, Canada",
+  //     name: "Little Victories Coffee Roasters - Elgin",
+  //   },
+  //   {
+  //     id: "ChIJSQkH3sAFzkwRhS8mNhp6nts",
+  //     formattedAddress: "912 Bank St, Ottawa, ON K1S 3W6, Canada",
+  //     name: "Kettlemans Bagel",
+  //   },
+  //   {
+  //     id: "ChIJEYf9WFEEzkwRmzXNk2Aw2lU",
+  //     formattedAddress: "150 Elgin St, Ottawa, ON K2P 1L4, Canada",
+  //     name: "The SconeWitch",
+  //   },
+  // ];
+
+  // console.log(stations, "station");
 
   // const stations = [
   //   {
@@ -87,11 +99,11 @@ export default function charging() {
           <Sidebar></Sidebar>
         </div>
 
-        <MapWithMarkers locations={stations}></MapWithMarkers>
+        <MapWithMarkers locations={json_marker}></MapWithMarkers>
       </div>
 
       <div className="flex flex-nowrap overflow-x-auto space-x-4 py-4">
-        {stations.map((station) => (
+        {json_marker.map((station) => (
           <ChargingStationCard key={station.id} station={station} />
         ))}
       </div>

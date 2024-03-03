@@ -64,6 +64,7 @@ const MapWithMarkers = ({ locations }) => {
     fetchCoordinates();
   }, [locations]);
 
+  console.log(locations, "location from mapmaker");
   // Set up Google Maps API key
   const apiKey = "AIzaSyCVrzSbDpq1huUtJ-06e5c1zXsZTGFuh9w";
 
@@ -77,13 +78,16 @@ const MapWithMarkers = ({ locations }) => {
         zoom={13}
       >
         {markerData.map((location) => (
-          <Marker
-            key={location.id}
-            position={location}
-            // text={location.name}
-            imgSrc="https://img.icons8.com/ios-filled/50/region-code.png"
-            // imgSrc="https://img.icons8.com/ios-filled/50/region-code.png"
-          />
+          <div>
+            {location.lat}
+            <Marker
+              key={location.id}
+              position={location}
+              // text={location.name}
+              imgSrc="https://img.icons8.com/ios-filled/50/region-code.png"
+              // imgSrc="https://img.icons8.com/ios-filled/50/region-code.png"
+            />
+          </div>
         ))}
         <Marker position={center} />
       </GoogleMap>

@@ -3,7 +3,7 @@
 import Car from "@/app/component/car";
 import Sidebar from "@/app/component/sideBar";
 import TpBar from "@/app/component/tpBar";
-import { useRouter } from "next/navigation";
+import { useRouter, useNavigate } from "next/navigation";
 import Image from "next/image";
 import BatteryPage from "./component/batteryPage";
 import { useEffect, useState, useRef, use } from "react";
@@ -78,10 +78,17 @@ export default function Home() {
     }
   }, [transcript, isRecording]);
 
-  const navigateHome = () => {
-    router.push("/charging");
-    console.log("rouer pushing");
-  };
+  useEffect(() => {
+    console.log(data);
+    if (data) {
+      var tmp = JSON.stringify(data.data);
+      console.log(data);
+      speak(data.speak);
+      router.push(`/charging/?markers=${tmp}`);
+
+      console.log("rouer pushing");
+    }
+  }, [data]);
   // useEffect(() => {
   //   router.push("/routes");
   //   console.log("router push");
@@ -172,12 +179,10 @@ export default function Home() {
       </div>
       <div className="absolute z-10 flex flex-box">
         <Sidebar></Sidebar>
-      <div className="">
+        <div className="">
           <BatteryPage></BatteryPage>
+        </div>
       </div>
-        
-      </div>
-
     </main>
   );
 }
