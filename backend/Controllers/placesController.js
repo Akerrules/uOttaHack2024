@@ -82,12 +82,12 @@ async function searchNearbyPlaces(lat, lng, placeType) {
   const headers = {
     'Content-Type': 'application/json',
     'X-Goog-Api-Key': API_KEY,
-    'X-Goog-FieldMask': `places.displayName,places.formattedAddress,places.id`
+    'X-Goog-FieldMask': `places.displayName,places.formattedAddress,places.id,places.photos`
   };
 
   try {
     const response = await axios.post(url, requestBody, { headers });
-    console.log(response.data.places);
+    // console.log(response.data.places.p);
     const places = transformObjects(response.data.places);
     return places;
   } catch (error) {
@@ -100,7 +100,8 @@ function transformObjects(arr) {
     return arr.map(obj => ({
       id: obj.id,
       formattedAddress: obj.formattedAddress,
-      name: obj.displayName.text
+      name: obj.displayName.text,
+      // photos: obj.photos
     }));
   }
 function filterUniqueAddresses(arr) {

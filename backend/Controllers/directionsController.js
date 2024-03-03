@@ -25,11 +25,11 @@ async function fetchDirections(origin, destination) {
     });
 
     const data = response.data;
-    console.log(data);
+    console.log(data.routes[0].legs[0].duration);
     if (data.status === 'OK') {
         // parse the text to integer
-        console.log(data);
-        const distance = parseInt(data.routes[0].legs[0].distance.text);
+        console.log(data.routes[0].legs[0].distance);
+        const distance = Math.ceil(data.routes[0].legs[0].distance.value / 1000) ;
         const duration = data.routes[0].legs[0].duration.text;
         // return data.routes[0];
       return {distance, duration}; // Returning the first route found
