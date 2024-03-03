@@ -25,7 +25,7 @@ function DayTime() {
   const formattedTime = currentTime.toLocaleTimeString();
 
   return (
-    <div>
+    <div className=''>
       <h1 className='font-bold'>{formattedTime}</h1>
       <h1 className='font-normal'>{formattedDate}</h1>
     </div>
