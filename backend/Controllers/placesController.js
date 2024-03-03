@@ -1,9 +1,6 @@
 const axios = require('axios');
 const API_KEY = process.env.API_KEY;
 
-
-
-
 async function getPlacesAlongRoute(req, res) {
   const { origin, destination, placeType = "electric_vehicle_charging_station" } = req.body;
   try {
