@@ -4,7 +4,7 @@ import Car from "@/app/component/car";
 import Sidebar from "@/app/component/sideBar";
 import TpBar from "@/app/component/tpBar";
 import Image from "next/image";
-import battery from "./component/batteryPage";
+import BatteryPage from "./component/batteryPage";
 
 export default function Home() {
   return (
@@ -17,12 +17,12 @@ export default function Home() {
 
         <TpBar></TpBar>
       </div>
-       <div className="absolute z-10">
+       <div className="absolute z-10 ">
           <Sidebar></Sidebar>  
         </div>
 
-        <div className="absolute z-10">
-          <battery></battery>
+        <div className="absolute z-10 top-[550px] left-[400px]">
+            <BatteryPage></BatteryPage>
         </div>
       
     </main>

@@ -14,9 +14,20 @@ function Sidebar() {
   const [activeRoute, setActiveRoute] = useState('');
 
   // Function to determine if a link is active
-  const isActiveLink = (href) => {
-    return pathname === href;
-  };
+  // Function to determine if a link is active
+const isActiveLink = (href) => {
+  if (href === '/') {
+    return pathname === '/';
+  }
+
+  const keywordIndex = href.indexOf('/');
+  const firstSlashIndex = href.indexOf('/', keywordIndex + 1); // Find the index of the first '/' after the keyword
+  const pathToCheck = firstSlashIndex === -1 ? href : href.substring(0, firstSlashIndex); // Extract the path to check
+  
+  return pathname.startsWith(pathToCheck); // Check if the current pathname starts with the extracted path
+};
+
+  
 
   // Function to update the active route
   const updateActiveRoute = () => {
@@ -36,7 +47,7 @@ function Sidebar() {
     if (pathname === '/') {
       return (
         <Link href={href}>
-          <p className={`text-3xl p-6 font-semibold ${isActiveLink(href) ? 'text-blue-500' : 'text-gray-500'}`}>
+          <p className={`text-3xl p-6 font-semibold ${isActiveLink(href) ? 'text-blue-500' : 'text-gray-500'} transition-transform duration-300 hover:-translate-y-1`}>
             <FontAwesomeIcon icon={icon} />
             <span className="ml-2">{text}</span>
           </p>
@@ -45,13 +56,18 @@ function Sidebar() {
     } else {
       return (
         <Link href={href}>
-          <p className={`text-3xl p-6 font-semibold ${isActiveLink(href) ? 'text-blue-500' : 'text-gray-500'}`}>
+          <p className={`text-3xl p-6 font-semibold ${isActiveLink(href) ? 'text-blue-500' : 'text-gray-500'} transition-transform duration-300 hover:-translate-y-1 `}>
             <FontAwesomeIcon icon={icon} />
           </p>
         </Link>
       );
     }
   };
+
+  const isHomeRoute = () => {
+    return pathname === '/';
+  };
+
 
   // Render the "Start Trip" button only if the current path is "/"
   const renderStartTripButton = () => {
@@ -68,7 +84,7 @@ function Sidebar() {
   };
 
   return (
-    <div className="ml-10 rounded-lg w-auto">
+    <div className={`rounded-lg w-auto ${isHomeRoute() ? 'ml-10' : ''}`}>
       <ul>
         <li>{renderLinkContent(faHouse, 'HOME', '/')}</li>
         <li>{renderLinkContent(faRoute, 'ROUTES', '/routes')}</li>

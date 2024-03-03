@@ -9,10 +9,9 @@ function Model() {
   const modelRef = useRef();
   const { scene } = useGLTF("/ford_mustang.glb");
 
-  useFrame(() => {
-    // Check if the modelRef.current exists and has a rotation property before trying to update it
+  useFrame((state, delta) => {
     if (modelRef.current && modelRef.current.rotation) {
-      modelRef.current.rotation.y += 100;
+      modelRef.current.rotation.y += delta * 0.5; // Rotates the model on its Y-axis
     }
   });
   return <primitive
