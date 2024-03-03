@@ -74,7 +74,56 @@ function get_Navigation(transcript) {
         returnLikelihoods: "NONE",
       });
       console.log(response.generations[0].text);
-      let result = response.generations[0].text;
+      let result = response.generations[0].text; //need to find[]
+      result = result.slice(result.indexOf("[") + 1, result.indexOf("]"));
+      let result_list = result.split(",");
+      console.log("should be an array", result);
+      try {
+        // Prepare the URL of the second controller's API
+        // Assuming localhost for simplicity; in a real scenario, this could be a different service URL
+        const response = await axios.post("http://localhost:3500/places/", {
+          origin: result_list[0],
+          destination: result_list[1],
+          placeType: "electric_vehicle_charging_station",
+        });
+
+        var tmp =
+          "Generate a response for the given tag. Example: here all the ev charging station along the way to your route!'. here is the list of the starting place and destination" +
+          result +
+          ". first be happy about their destination and tell them ur excited to guide them and then Say something breif about  the destination like a fact! Then say how many ev charging station there are using this list :" +
+          JSON.stringify(response.data);
+        // console.log(response.data.filter(Boolean));
+
+        const response2 = await cohere.generate({
+          model: "command",
+          prompt: tmp,
+
+          maxTokens: 200,
+          temperature: 0.9,
+          k: 0,
+          stopSequences: [],
+          returnLikelihoods: "NONE",
+        });
+        // const response2 = await cohere.generate({
+        //   model: "command",
+        //   prompt:
+        //     "Generate a response for the given tag. Example: here all the ev charging station along the way to your route!'. here is the list of the starting place and destination" +
+        //     result +
+        //     ".Say something about the destination like a fact ",
+        //   maxTokens: 100,
+        //   temperature: 0.9,
+        //   k: 0,
+        //   stopSequences: [],
+        //   returnLikelihoods: "NONE",
+        // });
+        result = {
+          data: response.data,
+          speak: response2.generations[0].text,
+        };
+      } catch (error) {
+        console.log(error);
+      }
+
       resolve(result);
     } catch (error) {
       reject(error);
