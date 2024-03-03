@@ -1,8 +1,8 @@
 "use client";
 
-import Car from "@/component/car";
-import Sidebar from "@/component/sideBar";
-import TpBar from "@/component/tpBar";
+import Car from "@/app/component/car";
+import Sidebar from "@/app/component/sideBar";
+import TpBar from "@/app/component/tpBar";
 import Image from "next/image";
 
 export default function Home() {
