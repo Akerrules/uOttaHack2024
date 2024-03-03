@@ -26,12 +26,10 @@ function Weather() {
   const getWeatherIconUrl = (weatherCondition) => {
     // You can define mappings of weather conditions to icon URLs here
     switch (weatherCondition) {
-      case 'Clear':
-        return 'url_to_clear_weather_icon';
       case 'Clouds':
-        return 'url_to_cloudy_weather_icon';
+        return './weather/cloudy.png';
       case 'Rain':
-        return 'url_to_rainy_weather_icon';
+        return './weather/rain.png';
       // Add more cases for other weather conditions as needed
       case 'Fog':
         return '/weather/fog.png';

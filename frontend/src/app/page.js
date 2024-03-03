@@ -177,9 +177,13 @@ export default function Home() {
       <div className=" w-full z-10">
         <TpBar></TpBar>
       </div>
-      <div className="absolute z-10 flex flex-box">
+      <div className="absolute z-10 flex flex-col ">
         <Sidebar></Sidebar>
+<<<<<<< Updated upstream
         <div className="">
+=======
+      <div className="ml-8 inset-x-0 bottom-0">
+>>>>>>> Stashed changes
           <BatteryPage></BatteryPage>
         </div>
       </div>
