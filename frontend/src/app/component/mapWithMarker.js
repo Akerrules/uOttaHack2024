@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from "react";
-import GoogleMapReact from "google-map-react";
+import { GoogleMap, Marker, LoadScript } from "@react-google-maps/api";
 import axios from "axios";
 // Marker.js or at the top of your current file
-const Marker = ({ text }) => (
-  <div
-    style={{
-      width: "50px",
-      height: "50px",
-      position: "absolute",
-      // background: "red",
-      // borderRadius: "50%",
-      color: "white",
-    }}
-  >
-    <img
-      width="50"
-      height="50"
-      src="https://img.icons8.com/ios-filled/50/region-code.png"
-      alt="region-code"
-    />
-  </div>
-);
+// const Marker = ({ text }) => (
+//   <div
+//     style={{
+//       width: "50px",
+//       height: "50px",
+//       position: "absolute",
+//       // background: "red",
+//       // borderRadius: "50%",
+//       color: "white",
+//     }}
+//   >
+//     <img
+//       width="50"
+//       height="50"
+//       src="https://img.icons8.com/ios-filled/50/region-code.png"
+//       alt="region-code"
+//     />
+//   </div>
+// );
 
 const MapWithMarkers = ({ locations }) => {
   const [markerData, setMarkerData] = useState([]);
+  const mapContainerStyle = {
+    width: "100%",
+    height: "400px",
+    // This will round the corners of the container
+    overflow: "hidden", // This ensures the corners of the map itself are rounded
+  };
+  const center = {
+    lat: 45.4218,
+    lng: -75.6816,
+  };
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -58,24 +68,26 @@ const MapWithMarkers = ({ locations }) => {
   const apiKey = "AIzaSyCVrzSbDpq1huUtJ-06e5c1zXsZTGFuh9w";
 
   return (
-    <div style={{ height: "400px", width: "100%" }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: apiKey }}
-        defaultCenter={{ lat: 45.4215, lng: -75.6972 }} // Default center (Ottawa)
-        defaultZoom={12} // Default zoom level
+    // <div style={{ height: "400px", width: "100%" }}>
+
+    <LoadScript googleMapsApiKey="AIzaSyCVrzSbDpq1huUtJ-06e5c1zXsZTGFuh9w">
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={13}
       >
         {markerData.map((location) => (
           <Marker
             key={location.id}
-            lat={location.lat}
-            lng={location.lng}
+            position={location}
             // text={location.name}
             imgSrc="https://img.icons8.com/ios-filled/50/region-code.png"
             // imgSrc="https://img.icons8.com/ios-filled/50/region-code.png"
           />
         ))}
-      </GoogleMapReact>
-    </div>
+        <Marker position={center} />
+      </GoogleMap>
+    </LoadScript>
   );
 };
 

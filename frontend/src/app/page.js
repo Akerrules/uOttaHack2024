@@ -3,19 +3,23 @@
 import Car from "@/app/component/car";
 import Sidebar from "@/app/component/sideBar";
 import TpBar from "@/app/component/tpBar";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import BatteryPage from "./component/batteryPage";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import "regenerator-runtime/runtime";
 import { userAgent } from "next/server";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import axios from "axios";
+import path from "path";
 export default function Home() {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [data, setData] = useState();
   const [testSpeak, setTestSpeak] = new useState("");
+  const router = useRouter();
   const options = {
     pitch: 1, // Default pitch
     rate: 1, // Default rate
@@ -74,6 +78,15 @@ export default function Home() {
     }
   }, [transcript, isRecording]);
 
+  const navigateHome = () => {
+    router.push("/charging");
+    console.log("rouer pushing");
+  };
+  // useEffect(() => {
+  //   router.push("/routes");
+  //   console.log("router push");
+  // }, [setData]);
+
   useEffect(() => {
     if (isRecording) {
       // Update the final transcript whenever new speech is detected
@@ -108,6 +121,11 @@ export default function Home() {
       console.log(response.data);
       // setTestSpeak(response.data + "test");
       console.log("should speak");
+      if (!(response.data === "")) {
+        setData(response.data);
+        console.log("should be navigating");
+        navigateHome();
+      }
       setTestSpeak(response.data.speak);
       // Handle successful posting here, e.g., resetting transcript
       resetTranscript();

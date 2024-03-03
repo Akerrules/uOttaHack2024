@@ -176,7 +176,7 @@ function get_Find_Near(transcript, currentLocation) {
             "and the tag is:" +
             result +
             ". Don't add comentry it just need to be general like alexa.",
-          maxTokens: 100,
+          maxTokens: 200,
           temperature: 0.9,
           k: 0,
           stopSequences: [],
@@ -209,7 +209,8 @@ function get_Jokes(transcript) {
         returnLikelihoods: "NONE",
       });
       console.log(response.generations[0].text);
-      result = response.generations[0].text;
+      result = { data: "", speak: response.generations[0].text };
+
       console.log("should be sending jokes back");
       resolve(result);
     } catch (error) {
