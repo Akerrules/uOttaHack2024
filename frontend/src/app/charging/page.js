@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import TpBar from "../component/tpBar";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "../component/sideBar";
@@ -13,9 +13,8 @@ export default function charging() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const search = searchParams.get("markers");
-
-  var json_marker = JSON.parse(search);
+  const decodedSearch = decodeURIComponent(searchParams.get("markers"));
+  var json_marker = JSON.parse(decodedSearch);
 
   console.log(json_marker, "jason");
   // const stations = [
@@ -104,13 +103,10 @@ export default function charging() {
       </div>
 
       <div className="flex flex-nowrap overflow-x-auto space-x-4 py-4">
-        {json_marker && (
-          <div>
-            {json_marker.map((station) => (
-              <ChargingStationCard key={station.id} station={station} />
-            ))}
-          </div>
-        )}
+        {json_marker &&
+          json_marker.map((station) => (
+            <ChargingStationCard key={station.id} station={station} />
+          ))}
       </div>
     </main>
   );

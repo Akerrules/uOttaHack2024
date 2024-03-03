@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, LoadScript } from "@react-google-maps/api";
+import { useRouter } from "next/navigation";
 import axios from "axios";
+import { Router } from "next/router";
 // Marker.js or at the top of your current file
 // const Marker = ({ text }) => (
 //   <div
@@ -34,7 +36,6 @@ const MapWithMarkers = ({ locations }) => {
     lat: 45.4218,
     lng: -75.6816,
   };
-
   useEffect(() => {
     const fetchCoordinates = async () => {
       const promises = locations.map(async (location) => {

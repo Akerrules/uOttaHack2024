@@ -81,8 +81,9 @@ export default function Home() {
   useEffect(() => {
     console.log(data);
     if (data) {
-      var tmp = JSON.stringify(data.data);
+      var tmp = encodeURIComponent(JSON.stringify(data.data));
       console.log(data);
+      console.log(tmp);
       speak(data.speak);
       router.push(`/charging/?markers=${tmp}`);
 
@@ -179,11 +180,7 @@ export default function Home() {
       </div>
       <div className="absolute z-10 flex flex-col ">
         <Sidebar></Sidebar>
-<<<<<<< Updated upstream
-        <div className="">
-=======
-      <div className="ml-8 inset-x-0 bottom-0">
->>>>>>> Stashed changes
+        <div className="ml-8 inset-x-0 bottom-0 pt-20 w-screen justify-between">
           <BatteryPage></BatteryPage>
         </div>
       </div>
