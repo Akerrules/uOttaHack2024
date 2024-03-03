@@ -4,9 +4,7 @@ import React, { useState } from "react";
 import TpBar from "../component/tpBar";
 import Sidebar from "../component/sideBar";
 import Map from "../component/map";
-import MapPage from "./drivingMode";
-import SpotifyPlaylist from "./spotifyPlaylist";
-import CarDetail from "./detailInfo";
+
 
 
 export default function routes() {
@@ -21,26 +19,10 @@ export default function routes() {
         <div className="bg-white rounded-lg">
             <Sidebar></Sidebar>
         </div>
-        <div className="min-w-[55rem]">
           <Map></Map>
-          <MapPage></MapPage>
-           <CarDetail></CarDetail>
-  
-        </div>
-
-        <div className="">
-          <SpotifyPlaylist></SpotifyPlaylist>
-        </div>
+        
 
       </div>
-
-
-      
-
-
-
-      
-
     </main>
   );
 }

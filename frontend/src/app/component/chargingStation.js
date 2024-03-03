@@ -13,7 +13,7 @@ const ChargingStationCard = ({ station }) => {
         className="rounded-lg"
       /> */}
       <h2 className="text-lg font-semibold my-2">{station.name}</h2>
-      <p className="text-gray-600">{station.address}</p>
+      <p className="text-gray-600">{station.formattedAddress}</p>
       <Link href='/charging/station' > <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
         Charge Here
       </button></Link>
