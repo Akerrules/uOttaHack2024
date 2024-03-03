@@ -30,7 +30,8 @@ async function fetchDirections(origin, destination) {
         // console.log(data);
         const distance = parseInt(data.routes[0].legs[0].distance.text);
         const duration = data.routes[0].legs[0].duration.text;
-      return {distance, duration}; // Returning the first route found
+        return data.routes[0];
+      // return {distance, duration}; // Returning the first route found
     } else {
       throw new Error('Error fetching directions');
     }
