@@ -36,7 +36,7 @@ function Weather() {
       case 'Fog':
         return '/weather/fog.png';
       default:
-        return 'url_to_default_weather_icon';
+        return '/weather/sun.png';
     }
   };
 

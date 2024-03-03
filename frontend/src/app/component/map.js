@@ -5,7 +5,7 @@ const Map = () => {
     const mapContainerStyle = {
         width: '100%',
         height: '400px',
-        borderRadius: '100px', // This will round the corners of the container
+        borderRadius: '10px', // This will round the corners of the container
         overflow: 'hidden' // This ensures the corners of the map itself are rounded
     };
     const center = {
