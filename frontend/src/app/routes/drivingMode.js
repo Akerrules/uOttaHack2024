@@ -17,11 +17,9 @@ const MapPage = () => {
       <div className=" ">
         {/* Map Component */}
 
-        <Map></Map>
-
         {/* Information Bar */}
         <div className="">
-          <div className="bg-gray-200 p-4 mt-2">
+          <div className="bg-gray-200 p-4 mt-2 rounded-lg">
             <div className="flex justify-between items-center mb-2">
               <div>Distance {distance}</div>
               <div>Total Time {totaltime}</div>
@@ -39,9 +37,9 @@ const MapPage = () => {
           </div>
 
           {/* Music Playlist */}
-          <div className="mt-2 p-4 bg-gray-100">
-            <SpotifyEmbed></SpotifyEmbed>
-          </div>
+          {/* <div className="mt-2 p-4 bg-gray-100">
+                <SpotifyEmbed></SpotifyEmbed>
+            </div> */}
         </div>
       </div>
     </>
