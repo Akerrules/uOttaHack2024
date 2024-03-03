@@ -4,6 +4,7 @@ import Car from "@/app/component/car";
 import Sidebar from "@/app/component/sideBar";
 import TpBar from "@/app/component/tpBar";
 import Image from "next/image";
+import battery from "./component/batteryPage";
 
 export default function Home() {
   return (
@@ -12,16 +13,18 @@ export default function Home() {
         <Car></Car>
       </div>
       {/* <div className="absolute z-1 w-full h-screen bg-pink-100">h</div> */}
-      <div className="absolute  w-full z-10">
-        <TpBar></TpBar>
-        <div className="flex">
-          {/* 1. sideBar 
-        2. Three3D model Car 
-        3. List of things  */}
+      <div className=" w-full z-10">
 
-          <Sidebar></Sidebar>
-        </div>
+        <TpBar></TpBar>
       </div>
+       <div className="absolute z-10">
+          <Sidebar></Sidebar>  
+        </div>
+
+        <div className="absolute z-10">
+          <battery></battery>
+        </div>
+      
     </main>
   );
 }

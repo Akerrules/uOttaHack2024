@@ -15,7 +15,12 @@ function Model() {
       modelRef.current.rotation.y += 100;
     }
   });
-  return <primitive object={scene} position={[0, -0.3, -0.1]} scale={5} />;
+  return <primitive
+  object={scene}
+  position={[0, 0, -0.1]}
+  rotation={[0, 1.5, 0]}
+  scale={6}
+/>;
 }
 
 export default function Car() {
